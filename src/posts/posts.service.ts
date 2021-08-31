@@ -1,26 +1,33 @@
-import { Injectable } from '@nestjs/common';
-import { CreatePostDto } from './dto/create-post.dto';
-import { UpdatePostDto } from './dto/update-post.dto';
+// import { Injectable } from '@nestjs/common';
+// import { resolve } from 'path/posix';
+// import { CreatePostDto } from './dto/create-post.dto';
+// import { UpdatePostDto } from './dto/update-post.dto';
+// import { PostsRepository } from './posts.repository';
+// import { Post, PostDocument } from './schemas/post.schema';
 
-@Injectable()
-export class PostsService {
-  create(createPostDto: CreatePostDto) {
-    return 'This action adds a new post';
-  }
+// @Injectable()
+// export class PostsService {
+// constructor(){}
 
-  findAll() {
-    return `This action returns all posts`;
-  }
 
-  findOne(id: number) {
-    return `This action returns a #${id} post`;
-  }
+// //  create(createPostDto: CreatePostDto): Promise<Post> {
+// // return this.postsRepo.create(createPostDto);
+// // }
+  
 
-  update(id: number, updatePostDto: UpdatePostDto) {
-    return `This action updates a #${id} post`;
-  }
+//  findAll(): Promise<Post[]> {
+//   return new Promise(()=>{resolve();});//this.postsRepo.findAll();
+// }
 
-  remove(id: number) {
-    return `This action removes a #${id} post`;
-  }
-}
+// //   findOne(id: string) {
+// //     return this.postsRepo.findOne(id);
+// //   }
+
+// //   update(id: string, updatePostDto: UpdatePostDto) {
+// //     return `This action updates a #${id} post`;
+// //   }
+
+// //   remove(id: string) {
+// //     return `This action removes a #${id} post`;
+// //   }
+// }
