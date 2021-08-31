@@ -1,6 +1,13 @@
+import { IsNotEmpty, IsString } from "class-validator";
+
 export class CreatePostDto {
-    title: string;
-    content:string;
-    image:{file:Express.Multer.File
-            serverPath:string}
+  @IsNotEmpty()
+  @IsString()
+  title: string;
+
+  @IsNotEmpty()
+  @IsString()
+  content: string;
+
+  image: { file: Express.Multer.File; serverPath: string };
 }

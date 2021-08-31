@@ -6,7 +6,9 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { join } from "path";
 import { PostsModule } from "./posts/posts.module";
 import { AppPaths } from './appPaths';
-import multer from "multer";
+import 'reflect-metadata';
+import { ServeStaticModule } from '@nestjs/serve-static';
+
 const mongodb_cred = process.env.MONGODB_CREDENTIALS;
 
 @Module({
@@ -21,6 +23,10 @@ const mongodb_cred = process.env.MONGODB_CREDENTIALS;
 ),
 MulterModule.register({
   dest:AppPaths.imagesPath
+}),
+ServeStaticModule.forRoot({
+  rootPath: AppPaths.staticFrontendDir, 
+  exclude:[AppPaths.publicPath] 
 })
   ],
   controllers: [],

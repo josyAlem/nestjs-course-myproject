@@ -1,17 +1,21 @@
-import { Body, UploadedFile, UseInterceptors } from "@nestjs/common";
+import { Body, UploadedFile, UseInterceptors, UsePipes } from "@nestjs/common";
 import { Controller, Post, Req } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { CreatePostDto } from "./dto/create-post.dto";
 import { UpdatePostDto } from "./dto/update-post.dto";
 import { ImageFileOptions } from '../middelware/image-file-options';
+import { PostsService } from './posts.service';
+import { ValidationPipe } from '@nestjs/common/pipes';
 
 @Controller("api/posts")
 export class PostsController {
-  constructor() {}
+  constructor(private postSvc:PostsService) {}
 
   @Post()
-  @UseInterceptors(FileInterceptor("image",ImageFileOptions))
-  create(
+  @UsePipes(new ValidationPipe({ whitelist: true,
+       transform:true}))
+       @UseInterceptors(FileInterceptor("image",ImageFileOptions))
+       create(
     @Req() req,
     @Body() createPostDto: CreatePostDto,
     @UploadedFile() file: Express.Multer.File
@@ -20,7 +24,7 @@ export class PostsController {
       file: file,
       serverPath: req.protocol + "://" + req.get("host"),
     };
-    console.log(createPostDto);
+    return this.postSvc.create(createPostDto);
   }
   // @Get()
   // findAll() {

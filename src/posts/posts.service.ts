@@ -1,18 +1,18 @@
-// import { Injectable } from '@nestjs/common';
-// import { resolve } from 'path/posix';
-// import { CreatePostDto } from './dto/create-post.dto';
-// import { UpdatePostDto } from './dto/update-post.dto';
-// import { PostsRepository } from './posts.repository';
-// import { Post, PostDocument } from './schemas/post.schema';
+import { Injectable } from '@nestjs/common';
+import { resolve } from 'path/posix';
+import { CreatePostDto } from './dto/create-post.dto';
+import { UpdatePostDto } from './dto/update-post.dto';
+import { PostsRepository } from './posts.repository';
+import { Post, PostDocument } from './schemas/post.schema';
 
-// @Injectable()
-// export class PostsService {
-// constructor(){}
+@Injectable()
+export class PostsService {
+constructor(private postRepo:PostsRepository){}
 
 
-// //  create(createPostDto: CreatePostDto): Promise<Post> {
-// // return this.postsRepo.create(createPostDto);
-// // }
+ create(createPostDto: CreatePostDto) {
+return this.postRepo.create(createPostDto);
+}
   
 
 //  findAll(): Promise<Post[]> {
@@ -30,4 +30,4 @@
 // //   remove(id: string) {
 // //     return `This action removes a #${id} post`;
 // //   }
-// }
+ }
