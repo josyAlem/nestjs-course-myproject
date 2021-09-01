@@ -7,7 +7,7 @@ export class Post {
   @Prop({ required: true })
   title: string;
 
-  @Prop({ required: true })
+  @Prop({ required: false })
   content: string;
 
   @Prop({ required: false })

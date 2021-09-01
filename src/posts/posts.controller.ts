@@ -33,7 +33,8 @@ export class PostsController {
       serverPath: req.protocol + "://" + req.get("host"),
     };
     return this.postSvc.create(createPostDto);
-  }
+}
+
   @Get()
   findAll() {
     return this.postSvc.findAll();
@@ -45,7 +46,7 @@ export class PostsController {
   }
 
   @Put(":id")
-  @UsePipes(new ValidationPipe({ whitelist: true, transform: true }))
+  @UsePipes(new ValidationPipe({ whitelist: true, transform: true ,skipMissingProperties: true}))
   @UseInterceptors(FileInterceptor("image", ImageFileOptions))
   update(
     @Req() req,

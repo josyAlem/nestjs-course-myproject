@@ -1,19 +1,20 @@
 import { diskStorage } from "multer";
 import { AppPaths } from "src/appPaths";
 
-const MIME_TYPE_MAP = {
+const Image_Mime_Types = {
   "image/png": "png",
   "image/jpeg": "jpg",
   "image/jpg": "jpg",
 };
 
 const imageFileFilter = (req, file, cb) => {
-  const isValid = MIME_TYPE_MAP[file.mimetype];
-  let error = new Error("Invalid mime type");
-  if (isValid) {
-    error = null;
-  }
-  cb(error, true);
+  let error;
+  if(Image_Mime_Types[file.mimetype])
+   error=null;
+   else
+   error=new Error("Invalid image mime type");
+
+   cb(error, true);
 };
 const editFileName = (req, file, cb) => {
   return cb(null, getEditedFileName(file.originalname, file.mimetype));
@@ -28,5 +29,5 @@ export const ImageFileOptions = {
     filename: editFileName,
   }),
   fileFilter: imageFileFilter,
-  limits: { fileSize: 1024 * 1000 * 1000 * 25 }, // 25 Mb
+  limits: { fileSize: 1000 * 1000 * 7 }, // 5 Mb
 };
