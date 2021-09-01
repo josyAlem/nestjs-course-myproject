@@ -23,9 +23,11 @@ findById(id: string) {
     return this.postRepo.findById(id);
   }
 
-// //   update(id: string, updatePostDto: UpdatePostDto) {
-// //     return `This action updates a #${id} post`;
-// //   }
+  update(id: string, updatePostDto: UpdatePostDto) {
+    updatePostDto.id=id;
+    return this.postRepo.update(updatePostDto);
+
+  }
 
 // //   remove(id: string) {
 // //     return `This action removes a #${id} post`;

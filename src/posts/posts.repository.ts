@@ -6,10 +6,12 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { AppPaths } from "src/appPaths";
 import { join } from 'path';
 import { getEditedFileName } from "src/middelware/image-file-options";
+import { UpdatePostDto } from './dto/update-post.dto';
 
 @Injectable()
 export class PostsRepository {
   constructor(@InjectModel(Post.name) private postModel: Model<Post>) {}
+ 
   async create(dto:CreatePostDto) { 
     let fileName:string=getEditedFileName(dto.image.file.originalname,dto.image.file.mimetype);
     const fileNameFull:string=dto.image.serverPath+"/"+ AppPaths.publicPath+"/"+AppPaths.imagesPath+"/"+ fileName;
@@ -20,13 +22,11 @@ export class PostsRepository {
     });
    return post.save().then((createdPost) => {
   return({
-        message: "Post added successfully",
+        message: "Added successfully",
         data: createdPost
       });
   });
 }
-
-
 
   async findAll() {
     return   this.postModel.find().then((res) => {
@@ -34,6 +34,7 @@ export class PostsRepository {
       return { message: "Successful fetch!", data: res };
     });
   }
+
   async findById(id:string) {
     return  this.postModel.findById(id).then((post) => {
       if (post) {
@@ -43,23 +44,23 @@ export class PostsRepository {
       }
     });
   }
-//   async update(req, res, next) {
-//     let imagePath = req.body.imagePath;
-//     if (req.file) {
-//       const url = req.protocol + "://" + req.get("host");
-//       imagePath = url + "/images/" + req.file.filename;
-//     }
-//     const post = new this.postModel({
-//       _id: req.body.id,
-//       title: req.body.title,
-//       content: req.body.content,
-//       imagePath: imagePath,
-//     });
-//     //console.log(post);
-//     return  this.postModel.updateOne({ _id: req.params.id }, post).then((result) => {
-//       res.status(200).json({ message: "Update successful!" });
-//     });
-//   }
+  
+  async update(dto:UpdatePostDto) { 
+    let fileName:string=getEditedFileName(dto.image.file.originalname,dto.image.file.mimetype);
+    const fileNameFull:string=dto.image.serverPath+"/"+ AppPaths.publicPath+"/"+AppPaths.imagesPath+"/"+ fileName;
+    const post = new this.postModel({
+      _id: dto.id,
+      title: dto.title,
+      content: dto.content,
+      imagePath:fileNameFull,
+    });
+   return this.postModel.updateOne({_id:post._id},post).then((result) => {
+  return({
+        message: "Updated successfully",
+        data: dto
+      });
+  });
+}
 
 //   async deleteById(req, res, next) {
 //     return  this.postModel.deleteOne({ _id: req.params.id }).then((result) => {
