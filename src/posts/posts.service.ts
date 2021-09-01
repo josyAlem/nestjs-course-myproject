@@ -29,7 +29,7 @@ findById(id: string) {
 
   }
 
-// //   remove(id: string) {
-// //     return `This action removes a #${id} post`;
-// //   }
+  remove(id: string) {
+    return this.postRepo.remove(id);
+  }
  }

@@ -1,5 +1,6 @@
 import {
   Body,
+  Delete,
   Get,
   Param,
   Put,
@@ -59,8 +60,8 @@ export class PostsController {
     return this.postSvc.update(id,updatePostDto);
   }
 
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.postsService.remove(id);
-  // }
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.postSvc.remove(id);
+  }
 }
