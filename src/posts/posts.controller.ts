@@ -1,4 +1,4 @@
-import { Body, UploadedFile, UseInterceptors, UsePipes } from "@nestjs/common";
+import { Body, Get, Param, UploadedFile, UseInterceptors, UsePipes } from "@nestjs/common";
 import { Controller, Post, Req } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { CreatePostDto } from "./dto/create-post.dto";
@@ -26,15 +26,15 @@ export class PostsController {
     };
     return this.postSvc.create(createPostDto);
   }
-  // @Get()
-  // findAll() {
-  //   return this.postsService.findAll();
-  // }
+  @Get()
+  findAll() {
+    return this.postSvc.findAll();
+  }
 
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.postsService.findOne(id);
-  // }
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.postSvc.findById(id);
+  }
 
   // @Put(':id')
   // update(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {

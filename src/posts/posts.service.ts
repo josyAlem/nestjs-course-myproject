@@ -15,13 +15,13 @@ return this.postRepo.create(createPostDto);
 }
   
 
-//  findAll(): Promise<Post[]> {
-//   return new Promise(()=>{resolve();});//this.postsRepo.findAll();
-// }
+ findAll() {
+ return this.postRepo.findAll();
+}
 
-// //   findOne(id: string) {
-// //     return this.postsRepo.findOne(id);
-// //   }
+findById(id: string) {
+    return this.postRepo.findById(id);
+  }
 
 // //   update(id: string, updatePostDto: UpdatePostDto) {
 // //     return `This action updates a #${id} post`;

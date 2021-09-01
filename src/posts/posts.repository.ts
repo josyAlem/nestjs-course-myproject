@@ -2,7 +2,7 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { CreatePostDto } from "./dto/create-post.dto";
 import { Post, PostDocument } from "./schemas/post.schema";
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { AppPaths } from "src/appPaths";
 import { join } from 'path';
 import { getEditedFileName } from "src/middelware/image-file-options";
@@ -21,11 +21,28 @@ export class PostsRepository {
    return post.save().then((createdPost) => {
   return({
         message: "Post added successfully",
-        post: createdPost
+        data: createdPost
       });
   });
 }
 
+
+
+  async findAll() {
+    return   this.postModel.find().then((res) => {
+      console.log(res);
+      return { message: "Successful fetch!", data: res };
+    });
+  }
+  async findById(id:string) {
+    return  this.postModel.findById(id).then((post) => {
+      if (post) {
+        return { message: "Successful fetch!", data: post };
+      } else {
+      throw new NotFoundException();
+      }
+    });
+  }
 //   async update(req, res, next) {
 //     let imagePath = req.body.imagePath;
 //     if (req.file) {
@@ -41,22 +58,6 @@ export class PostsRepository {
 //     //console.log(post);
 //     return  this.postModel.updateOne({ _id: req.params.id }, post).then((result) => {
 //       res.status(200).json({ message: "Update successful!" });
-//     });
-//   }
-
-//   async findAll(req, res, next) {
-//     return   this.postModel.find().then((docs) => {
-//       console.log(docs);
-//       res.status(200).json({ message: "Successful fetch!", data: docs });
-//     });
-//   }
-//   async findById(req, res, next) {
-//     return  this.postModel.findById(req.params.id).then((post) => {
-//       if (post) {
-//         res.status(200).json({ message: "Successful fetch!", data: post });
-//       } else {
-//         res.status(404).json({ message: "Post not found!" });
-//       }
 //     });
 //   }
 
