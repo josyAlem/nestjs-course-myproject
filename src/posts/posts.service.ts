@@ -3,7 +3,6 @@ import { resolve } from 'path/posix';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { PostsRepository } from './posts.repository';
-import { Post, PostDocument } from './schemas/post.schema';
 
 @Injectable()
 export class PostsService {

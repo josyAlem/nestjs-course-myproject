@@ -1,16 +1,18 @@
 import { ValidationPipe } from '@nestjs/common/pipes';
+import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import { join } from 'path';
 import { AppModule } from './app.module';
 import { AppPaths } from './appPaths';
-const port= process.env.PORT;
+import { envVariables } from './shared/enums';
+const port: string = envVariables.PORT;
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.useStaticAssets(AppPaths.publicPath, {
     prefix: '/public'
   });
-  await app.listen(3000);
+  const configService = app.get(ConfigService);
+  await app.listen(configService.get(port));
 }
 bootstrap();

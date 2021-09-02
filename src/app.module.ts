@@ -1,15 +1,14 @@
-import { MiddlewareConsumer, Module, RequestMethod, Put } from '@nestjs/common';
-import { ConfigModule } from "@nestjs/config";
+import { MiddlewareConsumer, Module, RequestMethod, Put } from "@nestjs/common";
+import { ConfigModule, ConfigService } from "@nestjs/config";
 import { MongooseModule } from "@nestjs/mongoose";
 import { MulterModule } from "@nestjs/platform-express";
-import { TypeOrmModule } from "@nestjs/typeorm";
-import { join } from "path";
 import { PostsModule } from "./posts/posts.module";
-import { AppPaths } from './appPaths';
-import 'reflect-metadata';
-import { ServeStaticModule } from '@nestjs/serve-static';
+import { AppPaths } from "./appPaths";
+import "reflect-metadata";
+import { ServeStaticModule } from "@nestjs/serve-static";
+import { envVariables } from "./shared/enums";
 
-const mongodb_cred = process.env.MONGODB_CREDENTIALS;
+const mongodb_cred: string = envVariables.MONGODB_CREDENTIALS;
 
 @Module({
   imports: [
@@ -17,17 +16,25 @@ const mongodb_cred = process.env.MONGODB_CREDENTIALS;
     ConfigModule.forRoot({
       envFilePath: ".env",
       isGlobal: true,
+      cache:true,
+      expandVariables:true
     }),
-    MongooseModule.forRoot(
-       "mongodb+srv://josy:2oBMTMfUiv5aDBNm@cluster0.9i8oi.mongodb.net/mean-course-db?retryWrites=true&w=majority"
-),
-MulterModule.register({
-  dest:AppPaths.imagesPath
-}),
-ServeStaticModule.forRoot({
-  rootPath: AppPaths.staticFrontendDir, 
-  exclude:[AppPaths.publicPath] 
-})
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => ({
+        uri: `mongodb+srv://${configService.get(
+          mongodb_cred
+        )}?retryWrites=true&w=majority`,
+      }),
+      inject: [ConfigService],
+    }),
+    MulterModule.register({
+      dest: AppPaths.imagesPath,
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: AppPaths.staticFrontendDir,
+      exclude: [AppPaths.publicPath],
+    }),
   ],
   controllers: [],
   providers: [],

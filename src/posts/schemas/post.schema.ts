@@ -14,5 +14,5 @@ export class Post {
   imagePath: string;
 }
 
-export type PostDocument = Post & Document;
+//export type PostDocument = Post & Document;
 export const PostSchema = SchemaFactory.createForClass(Post);

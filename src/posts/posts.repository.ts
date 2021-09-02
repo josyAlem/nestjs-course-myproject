@@ -1,7 +1,7 @@
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { CreatePostDto } from "./dto/create-post.dto";
-import { Post, PostDocument } from "./schemas/post.schema";
+import { Post } from "./schemas/post.schema";
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { AppPaths } from "src/appPaths";
 import { join } from "path";
@@ -42,7 +42,7 @@ export class PostsRepository {
 
   async findAll(): Promise<globals.ResponseWrapper<Post[]>> {
     return this.postModel.find().then((res: Post[]) => {
-      console.log(res);
+     // console.log(res);
       return new Promise<globals.ResponseWrapper<Post[]>>((resolve, rej) => {
         resolve(
           new globals.ResponseWrapper<Post[]>("Fetched successfully!", res)
