@@ -2,20 +2,23 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { CreatePostDto } from "./dto/create-post.dto";
 import { Post } from "./schemas/post.schema";
-import { Injectable, NotFoundException } from "@nestjs/common";
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from "@nestjs/common";
 import { AppPaths } from "src/appPaths";
-import { join } from "path";
-import { getEditedFileName } from "src/middelware/image-file-options";
+import { FileOptions } from "src/middelware/image-file-options";
 import { UpdatePostDto } from "./dto/update-post.dto";
 import * as globals from "src/shared/globals";
-import { resolve } from "path/posix";
+import { envVariables } from "src/shared/config/env.enums";
 
 @Injectable()
 export class PostsRepository {
   constructor(@InjectModel(Post.name) private postModel: Model<Post>) {}
 
   async create(dto: CreatePostDto): Promise<globals.ResponseWrapper<Post>> {
-    let fileName: string = getEditedFileName(
+    let fileName: string = FileOptions.getEditedFileName(
       dto.image.file.originalname,
       dto.image.file.mimetype
     );
@@ -30,7 +33,7 @@ export class PostsRepository {
     const post = new this.postModel({
       title: dto.title,
       content: dto.content,
-      imagePath: fileNameFull,
+      imagePath: dto.image.file.buffer, //fileNameFull,
     });
     return post.save().then((createdPost) => {
       return new globals.ResponseWrapper<Post>(
@@ -42,7 +45,7 @@ export class PostsRepository {
 
   async findAll(): Promise<globals.ResponseWrapper<Post[]>> {
     return this.postModel.find().then((res: Post[]) => {
-     // console.log(res);
+      // console.log(res);
       return new Promise<globals.ResponseWrapper<Post[]>>((resolve, rej) => {
         resolve(
           new globals.ResponseWrapper<Post[]>("Fetched successfully!", res)
@@ -62,7 +65,7 @@ export class PostsRepository {
   }
 
   async update(dto: UpdatePostDto): Promise<globals.ResponseWrapper<Post>> {
-    let fileName: string = getEditedFileName(
+    let fileName: string = FileOptions.getEditedFileName(
       dto.image.file.originalname,
       dto.image.file.mimetype
     );
@@ -77,7 +80,7 @@ export class PostsRepository {
     let post = new this.postModel({
       _id: dto.id,
       title: dto.title,
-      imagePath: fileNameFull,
+      imagePath: dto.image.file.buffer, //fileNameFull,
     });
     if (dto.content) {
       post.content = dto.content;

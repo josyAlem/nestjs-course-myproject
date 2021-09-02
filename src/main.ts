@@ -1,10 +1,10 @@
-import { ValidationPipe } from '@nestjs/common/pipes';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { AppModule } from './app.module';
 import { AppPaths } from './appPaths';
-import { envVariables } from './shared/enums';
+import { envVariables } from "src/shared/config/env.enums";
+
 const port: string = envVariables.PORT;
 
 async function bootstrap() {

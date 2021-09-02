@@ -1,0 +1,5 @@
+export enum envVariables{
+    MONGODB_CREDENTIALS="MONGODB_CREDENTIALS",
+    STORE_FILES_DB="STORE_FILES_DB",
+    PORT="PORT"
+}

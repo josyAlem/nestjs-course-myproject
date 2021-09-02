@@ -6,7 +6,7 @@ import { PostsModule } from "./posts/posts.module";
 import { AppPaths } from "./appPaths";
 import "reflect-metadata";
 import { ServeStaticModule } from "@nestjs/serve-static";
-import { envVariables } from "./shared/enums";
+import { envVariables } from "src/shared/config/env.enums";
 
 const mongodb_cred: string = envVariables.MONGODB_CREDENTIALS;
 

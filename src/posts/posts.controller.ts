@@ -10,9 +10,9 @@ import {
 } from "@nestjs/common";
 import { Controller, Post, Req } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
-import { CreatePostDto } from './dto/create-post.dto';
-import { UpdatePostDto } from './dto/update-post.dto';
-import { ImageFileOptions } from "../middelware/image-file-options";
+import { CreatePostDto } from "./dto/create-post.dto";
+import { UpdatePostDto } from "./dto/update-post.dto";
+import { FileOptions } from "../middelware/image-file-options";
 import { PostsService } from "./posts.service";
 import { ValidationPipe } from "@nestjs/common/pipes";
 
@@ -22,7 +22,7 @@ export class PostsController {
 
   @Post()
   @UsePipes(new ValidationPipe({ whitelist: true, transform: true }))
-  @UseInterceptors(FileInterceptor("image", ImageFileOptions))
+  @UseInterceptors(FileInterceptor("image", FileOptions.getImageFileOptions()))
   create(
     @Req() req,
     @Body() createPostDto: CreatePostDto,
@@ -33,7 +33,7 @@ export class PostsController {
       serverPath: req.protocol + "://" + req.get("host"),
     };
     return this.postSvc.create(createPostDto);
-}
+  }
 
   @Get()
   findAll() {
@@ -46,8 +46,14 @@ export class PostsController {
   }
 
   @Put(":id")
-  @UsePipes(new ValidationPipe({ whitelist: true, transform: true ,skipMissingProperties: true}))
-  @UseInterceptors(FileInterceptor("image", ImageFileOptions))
+  @UsePipes(
+    new ValidationPipe({
+      whitelist: true,
+      transform: true,
+      skipMissingProperties: true,
+    })
+  )
+  @UseInterceptors(FileInterceptor("image", FileOptions.getImageFileOptions()))
   update(
     @Req() req,
     @Param("id") id: string,
@@ -58,11 +64,11 @@ export class PostsController {
       file: file,
       serverPath: req.protocol + "://" + req.get("host"),
     };
-    return this.postSvc.update(id,updatePostDto);
+    return this.postSvc.update(id, updatePostDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
+  @Delete(":id")
+  remove(@Param("id") id: string) {
     return this.postSvc.remove(id);
   }
 }

@@ -1,5 +1,4 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
 
 
 @Schema()
@@ -11,7 +10,7 @@ export class Post {
   content: string;
 
   @Prop({ required: false })
-  imagePath: string;
+  imagePath: string | 'Buffer' ;
 }
 
 //export type PostDocument = Post & Document;
