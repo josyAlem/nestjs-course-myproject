@@ -60,10 +60,12 @@ export class PostsController {
     @Body() updatePostDto: UpdatePostDto,
     @UploadedFile() file: Express.Multer.File
   ) {
-    updatePostDto.image = {
+    if(file){
+      updatePostDto.image = {
       file: file,
       serverPath: req.protocol + "://" + req.get("host"),
     };
+  }
     return this.postSvc.update(id, updatePostDto);
   }
 

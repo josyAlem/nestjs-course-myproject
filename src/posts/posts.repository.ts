@@ -65,7 +65,11 @@ export class PostsRepository {
   }
 
   async update(dto: UpdatePostDto): Promise<globals.ResponseWrapper<Post>> {
-    let fileName: string = FileOptions.getEditedFileName(
+    let post = new this.postModel({
+      _id: dto.id,
+      title: dto.title,
+    });
+     if(dto.image){let fileName: string = FileOptions.getEditedFileName(
       dto.image.file.originalname,
       dto.image.file.mimetype
     );
@@ -77,21 +81,22 @@ export class PostsRepository {
       AppPaths.imagesPath +
       "/" +
       fileName;
-    let post = new this.postModel({
-      _id: dto.id,
-      title: dto.title,
-      imagePath: dto.image.file.buffer, //fileNameFull,
-    });
+    
+      post.imagePath= dto.image.file.buffer; //fileNameFull,
+    }
+    
     if (dto.content) {
       post.content = dto.content;
     }
+    
 
     return this.postModel.updateOne({ _id: post._id }, post).then((result) => {
-      //console.log(result);
-      if (result.modifiedCount == 1)
-        return new globals.ResponseWrapper<Post>("Updated successfully!", post);
-      else throw new NotFoundException(`Data not found for Id=${post._id}`);
-    });
+//      console.log(result);
+      if(result.matchedCount==0)
+       throw new NotFoundException(`Data not found for Id=${post._id}`);
+    else if (result.modifiedCount <= 1)
+    return new globals.ResponseWrapper<Post>("Updated successfully!", post);
+  });
   }
 
   async remove(id: string): Promise<globals.ResponseWrapper<null>> {
