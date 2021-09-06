@@ -69,45 +69,46 @@ export class PostsRepository {
       _id: dto.id,
       title: dto.title,
     });
-     if(dto.image){let fileName: string = FileOptions.getEditedFileName(
-      dto.image.file.originalname,
-      dto.image.file.mimetype
-    );
-    const fileNameFull: string =
-      dto.image.serverPath +
-      "/" +
-      AppPaths.publicPath +
-      "/" +
-      AppPaths.imagesPath +
-      "/" +
-      fileName;
-    
-      post.imagePath= dto.image.file.buffer; //fileNameFull,
+    if (dto.image) {
+      let fileName: string = FileOptions.getEditedFileName(
+        dto.image.file.originalname,
+        dto.image.file.mimetype
+      );
+      const fileNameFull: string =
+        dto.image.serverPath +
+        "/" +
+        AppPaths.publicPath +
+        "/" +
+        AppPaths.imagesPath +
+        "/" +
+        fileName;
+
+      post.imagePath = dto.image.file.buffer; //fileNameFull,
     }
-    
+
     if (dto.content) {
       post.content = dto.content;
     }
-    
 
     return this.postModel.updateOne({ _id: post._id }, post).then((result) => {
-//      console.log(result);
-      if(result.matchedCount==0)
-       throw new NotFoundException(`Data not found for Id=${post._id}`);
-    else if (result.modifiedCount <= 1)
-    return new globals.ResponseWrapper<Post>("Updated successfully!", post);
-  });
+      //      console.log(result);
+      if (result.matchedCount == 0)
+        throw new NotFoundException(`Data not found for Id=${post._id}`);
+      else if (result.modifiedCount <= 1)
+        return new globals.ResponseWrapper<Post>("Updated successfully!", post);
+    });
   }
 
   async remove(id: string): Promise<globals.ResponseWrapper<null>> {
     return this.postModel.deleteOne({ _id: id }).then((result) => {
-      //console.log(result);
+      console.log(result);
       if (result.deletedCount == 0)
+        throw new NotFoundException(`Data not found for Id=${id}`);
+      else
         return new globals.ResponseWrapper<null>(
           `Deleted successfully! Id=${id}`,
           null
         );
-      else throw new NotFoundException(`Data not found for Id=${id}`);
     });
   }
 }

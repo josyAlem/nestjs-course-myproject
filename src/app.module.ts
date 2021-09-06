@@ -33,7 +33,7 @@ const mongodb_cred: string = envVariables.MONGODB_CREDENTIALS;
     }),
     ServeStaticModule.forRoot({
       rootPath: AppPaths.staticFrontendDir,
-      exclude: [AppPaths.publicPath],
+     
     }),
   ],
   controllers: [],
