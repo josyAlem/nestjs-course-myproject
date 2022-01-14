@@ -1,6 +1,3 @@
-
- export class ResponseWrapper<T>{
-     constructor(public message:string,
-        public data:T){}
-
+export class ResponseWrapper<T> {
+  constructor(public message: string, public data: T) {}
 }

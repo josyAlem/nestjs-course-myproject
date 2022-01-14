@@ -1,17 +1,12 @@
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
-import { CreatePostDto } from "./dto/create-post.dto";
-import { Post } from "./schemas/post.schema";
-import {
-  Injectable,
-  InternalServerErrorException,
-  NotFoundException,
-} from "@nestjs/common";
 import { AppPaths } from "src/appPaths";
 import { FileOptions } from "src/middelware/image-file-options";
-import { UpdatePostDto } from "./dto/update-post.dto";
 import * as globals from "src/shared/globals";
-import { envVariables } from "src/shared/config/env.enums";
+import { CreatePostDto } from "./dto/create-post.dto";
+import { UpdatePostDto } from "./dto/update-post.dto";
+import { Post } from "./schemas/post.schema";
 
 @Injectable()
 export class PostsRepository {

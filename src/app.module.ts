@@ -1,12 +1,12 @@
-import { MiddlewareConsumer, Module, RequestMethod, Put } from "@nestjs/common";
+import { Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { MongooseModule } from "@nestjs/mongoose";
 import { MulterModule } from "@nestjs/platform-express";
-import { PostsModule } from "./posts/posts.module";
-import { AppPaths } from "./appPaths";
-import "reflect-metadata";
 import { ServeStaticModule } from "@nestjs/serve-static";
+import "reflect-metadata";
 import { envVariables } from "src/shared/config/env.enums";
+import { AppPaths } from "./appPaths";
+import { PostsModule } from "./posts/posts.module";
 
 const mongodb_cred: string = envVariables.MONGODB_CREDENTIALS;
 
@@ -16,8 +16,8 @@ const mongodb_cred: string = envVariables.MONGODB_CREDENTIALS;
     ConfigModule.forRoot({
       envFilePath: ".env",
       isGlobal: true,
-      cache:true,
-      expandVariables:true
+      cache: true,
+      expandVariables: true,
     }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
@@ -33,7 +33,6 @@ const mongodb_cred: string = envVariables.MONGODB_CREDENTIALS;
     }),
     ServeStaticModule.forRoot({
       rootPath: AppPaths.staticFrontendDir,
-     
     }),
   ],
   controllers: [],

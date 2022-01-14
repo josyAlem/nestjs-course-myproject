@@ -1,6 +1,5 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Binary } from 'typeorm';
-
+import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { Binary } from "typeorm";
 
 @Schema()
 export class Post {
@@ -11,8 +10,7 @@ export class Post {
   content: string;
 
   @Prop({ required: false })
-  imagePath:  Buffer
-
+  imagePath: Buffer;
 }
 
 //export type PostDocument = Post & Document;
