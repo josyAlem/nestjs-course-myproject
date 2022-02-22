@@ -27,6 +27,7 @@ const mongodb_cred: string = envVariables.MONGODB_CREDENTIALS;
         )}?retryWrites=true&w=majority`,
       }),
       inject: [ConfigService],
+
     }),
     MulterModule.register({
       dest: AppPaths.imagesPath,
